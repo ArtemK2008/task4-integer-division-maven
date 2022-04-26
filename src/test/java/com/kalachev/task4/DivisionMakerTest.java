@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class testDivisionMaker {
+class DivisionMakerTest {
 	
 	@Test
 	void divide_ShouldReturnCorrectResult_whenDividentIsZero() {
