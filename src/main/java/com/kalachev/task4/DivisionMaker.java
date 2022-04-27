@@ -7,7 +7,12 @@ import java.util.Scanner;
 
 public class DivisionMaker {
 	static final String NEWLINE = System.lineSeparator();
-
+	static final String DASH = " ";
+	static final String PIPE = "|";
+	static final String UNDERSCORE = "_";
+	static final String HYPHEN = "-";
+	static final String EMPTY = "";
+	
 	public String divide(int dividend, int divisor) throws IllegalArgumentException {
 		DivisionsContainer divisionsContainer = new DivisionsContainer(dividend, divisor);
 		handleNegatives(divisionsContainer);
@@ -49,7 +54,8 @@ public class DivisionMaker {
 
 	private List<String> createPartialCalculationDivisors(DivisionsContainer divisionsContainer) {
 		List<String> divisorList = new ArrayList<>();
-		String[] divResultStringArray = convertToStringArray(divisionsContainer.getDividend() / divisionsContainer.getDivisor());
+		String[] divResultStringArray = convertToStringArray(
+				divisionsContainer.getDividend() / divisionsContainer.getDivisor());
 		ArrayList<String> divResultStringListWithZerosRemoved = retrieveWithZerosRemover(divResultStringArray);
 		for (String s : divResultStringListWithZerosRemoved) {
 			String curentDivisorString = String.valueOf(Integer.parseInt(s) * divisionsContainer.getDivisor());
@@ -59,7 +65,7 @@ public class DivisionMaker {
 	}
 
 	private String[] convertToStringArray(int number) {
-		return String.valueOf(number).split("");
+		return String.valueOf(number).split(EMPTY);
 	}
 
 	private ArrayList<String> retrieveWithZerosRemover(String[] array) {
@@ -102,8 +108,8 @@ public class DivisionMaker {
 	private String handleFirstLineOfExpression(DivisionsContainer divisionsContainer) {
 		int currentDivisor = divisionsContainer.getDivisor();
 		StringBuilder consoleOutputString = new StringBuilder();
-		consoleOutputString.append("_" + Integer.toString(divisionsContainer.getDividend()));
-		consoleOutputString.append("|");
+		consoleOutputString.append(UNDERSCORE + Integer.toString(divisionsContainer.getDividend()));
+		consoleOutputString.append(PIPE);
 		for (int i = 0; i < divisionsContainer.getNegativeIntHandler(); i++) {
 			currentDivisor *= -1;
 		}
@@ -117,19 +123,20 @@ public class DivisionMaker {
 		String firstDivisor = createPartialCalculationDivisors(divisionsContainer).get(0);
 		String firstDivident = createPartialCalculationDividents(divisionsContainer).get(0);
 		int requiredDashsBeforeDivisor = firstDivident.length() - firstDivisor.length() + 1;
-		consoleOutputString.append(String.join("", Collections.nCopies(Math.max(0, requiredDashsBeforeDivisor), " ")));
+		consoleOutputString.append(String.join(EMPTY, Collections.nCopies(Math.max(0, requiredDashsBeforeDivisor), DASH)));
 		consoleOutputString.append(firstDivisor);
 		int requiredDashsAfterDivisor = calculateLengthBeforeSlash - firstDivisor.length() - requiredDashsBeforeDivisor;
-		consoleOutputString.append(String.join("", Collections.nCopies(Math.max(0, requiredDashsAfterDivisor), " ")));
-		consoleOutputString.append("|");
-		consoleOutputString
-				.append(String.join("", Collections.nCopies(Math.max(0, calculateRinghtLineTwoDashAmmout(divisionsContainer)), "-")));
+		consoleOutputString.append(String.join(EMPTY, Collections.nCopies(Math.max(0, requiredDashsAfterDivisor), DASH)));
+		consoleOutputString.append(PIPE);
+		consoleOutputString.append(String.join(EMPTY,
+				Collections.nCopies(Math.max(0, calculateRinghtLineTwoDashAmmout(divisionsContainer)), HYPHEN)));
 		return consoleOutputString.toString();
 	}
 
 	private int calculateRinghtLineTwoDashAmmout(DivisionsContainer divisionsContainer) {
 		int possibleMaxAsDivisorLength = Integer.toString(divisionsContainer.getDivisor()).length();
-		int possibleMaxDivResultLength = Integer.toString(divisionsContainer.getDividend() / divisionsContainer.getDivisor()).length();
+		int possibleMaxDivResultLength = Integer
+				.toString(divisionsContainer.getDividend() / divisionsContainer.getDivisor()).length();
 		int maxAmmout = Math.max(possibleMaxAsDivisorLength, possibleMaxDivResultLength);
 		if (divisionsContainer.getNegativeIntHandler() > 0) {
 			maxAmmout += 1;
@@ -139,13 +146,13 @@ public class DivisionMaker {
 
 	private String handleThirdLineOfExpression(DivisionsContainer divisionsContainer) {
 		StringBuilder consoleOutputString = new StringBuilder();
-		consoleOutputString.append(" ");
+		consoleOutputString.append(DASH);
 		String firstDivident = createPartialCalculationDividents(divisionsContainer).get(0);
-		consoleOutputString.append(String.join("", Collections.nCopies(firstDivident.length(), "-")));
+		consoleOutputString.append(String.join(EMPTY, Collections.nCopies(firstDivident.length(), HYPHEN)));
 		int calculateLengthBeforeSlash = String.valueOf(divisionsContainer.getDividend()).length() + 1;
 		int calculateRequiredDashSize = calculateLengthBeforeSlash - firstDivident.length() - 1;
-		consoleOutputString.append(String.join("", Collections.nCopies(Math.max(0, calculateRequiredDashSize), " ")));
-		consoleOutputString.append("|");
+		consoleOutputString.append(String.join(EMPTY, Collections.nCopies(Math.max(0, calculateRequiredDashSize), DASH)));
+		consoleOutputString.append(PIPE);
 		int divResult = divisionsContainer.getDividend() / divisionsContainer.getDivisor();
 		for (int i = 0; i < divisionsContainer.getNegativeIntHandler(); i++) {
 			divResult *= -1;
@@ -174,7 +181,7 @@ public class DivisionMaker {
 				}
 			}
 			if (i == (dividentList.size() - 1)) {
-				consoleOutputString.append(String.join("", Collections.nCopies(Math.max(0, lastDash), " ")));
+				consoleOutputString.append(String.join(EMPTY, Collections.nCopies(Math.max(0, lastDash), DASH)));
 				consoleOutputString.append(dividentList.get(dividentList.size() - 1));
 			} else {
 				int lengthOfDivident = currentDivident.length();
@@ -191,15 +198,15 @@ public class DivisionMaker {
 					remove -= 1;
 				}
 				dashAmount += remove;
-				consoleOutputString.append(String.join("", Collections.nCopies(Math.max(0, dashAmount), " ")));
-				consoleOutputString.append("_").append(currentDivident).append(NEWLINE);
+				consoleOutputString.append(String.join(EMPTY, Collections.nCopies(Math.max(0, dashAmount), DASH)));
+				consoleOutputString.append(UNDERSCORE).append(currentDivident).append(NEWLINE);
 
 				consoleOutputString
-						.append(String.join("", Collections.nCopies(Math.max(0, dashAmount + lengthDiif + 1), " ")));
+						.append(String.join(EMPTY, Collections.nCopies(Math.max(0, dashAmount + lengthDiif + 1), DASH)));
 				consoleOutputString.append(divisorList.get(i) + NEWLINE);
 
-				consoleOutputString.append(String.join("", Collections.nCopies(Math.max(0, dashAmount + 1), " ")));
-				consoleOutputString.append(String.join("", Collections.nCopies(currentDivident.length(), "-")));
+				consoleOutputString.append(String.join(EMPTY, Collections.nCopies(Math.max(0, dashAmount + 1), DASH)));
+				consoleOutputString.append(String.join(EMPTY, Collections.nCopies(currentDivident.length(), HYPHEN)));
 				consoleOutputString.append(NEWLINE);
 
 				lastDash = dashAmount + 1 + (lengthOfDivident - String.valueOf(reminder).length());
@@ -224,41 +231,43 @@ public class DivisionMaker {
 		consoleOutputString.append(handleFirstLineOfExpression(divisionsContainer) + NEWLINE);
 
 		int dashsRequiredBeforeSlash = String.valueOf(divisionsContainer.getDividend()).length() + 1;
-		consoleOutputString.append(String.join("", Collections.nCopies(Math.max(0, dashsRequiredBeforeSlash), " ")));
-		consoleOutputString.append("|");
+		consoleOutputString.append(String.join(EMPTY, Collections.nCopies(Math.max(0, dashsRequiredBeforeSlash), DASH)));
+		consoleOutputString.append(PIPE);
 		int lineTwoDashsRequired = calculateRinghtLineTwoDashAmmout(divisionsContainer);
 		if (divisionsContainer.getNegativeIntHandler() == 2) {
 			lineTwoDashsRequired -= 1;
 		}
-		consoleOutputString.append(String.join("", Collections.nCopies(Math.max(0, lineTwoDashsRequired), "-")));
+		consoleOutputString.append(String.join(EMPTY, Collections.nCopies(Math.max(0, lineTwoDashsRequired), HYPHEN)));
 		consoleOutputString.append(NEWLINE);
 
 		int numberOfVerticalSymbolsForDivResult = String.valueOf(divisionsContainer.getDividend()).length();
-		consoleOutputString.append(" ");
-		consoleOutputString.append(String.join("", Collections.nCopies(numberOfVerticalSymbolsForDivResult, "-")));
+		consoleOutputString.append(DASH);
+		consoleOutputString.append(String.join(EMPTY, Collections.nCopies(numberOfVerticalSymbolsForDivResult, HYPHEN)));
 		int lineThreeDashMaxPossibleSize = String.valueOf(divisionsContainer.getDividend()).length() + 1;
 		int lineThreeRequiredDashSize = lineThreeDashMaxPossibleSize - numberOfVerticalSymbolsForDivResult - 1;
-		consoleOutputString.append(String.join("", Collections.nCopies(Math.max(0, lineThreeRequiredDashSize), " ")));
-		consoleOutputString.append("|" + Integer.toString(divisionsContainer.getDividend() / divisionsContainer.getDivisor()) + NEWLINE);
+		consoleOutputString.append(String.join(EMPTY, Collections.nCopies(Math.max(0, lineThreeRequiredDashSize), DASH)));
+		consoleOutputString.append(
+				PIPE + Integer.toString(divisionsContainer.getDividend() / divisionsContainer.getDivisor()) + NEWLINE);
 
-		consoleOutputString.append(" " + Integer.toString(divisionsContainer.getDividend() % divisionsContainer.getDivisor()));
+		consoleOutputString
+				.append(DASH + Integer.toString(divisionsContainer.getDividend() % divisionsContainer.getDivisor()));
 		return consoleOutputString.toString();
 	}
 
 	private void handleNegatives(DivisionsContainer divisionsContainer) {
 		if (divisionsContainer.getDividend() < 0) {
 			divisionsContainer.setDividend(Math.abs(divisionsContainer.getDividend()));
-			divisionsContainer.setNegativeIntHandler(divisionsContainer.getNegativeIntHandler() + 1); 
+			divisionsContainer.setNegativeIntHandler(divisionsContainer.getNegativeIntHandler() + 1);
 		}
 
 		if (divisionsContainer.getDivisor() < 0) {
-			divisionsContainer.setDivisor(Math.abs(divisionsContainer.getDivisor())); 
-          divisionsContainer.setNegativeIntHandler(divisionsContainer.getNegativeIntHandler() +1);
+			divisionsContainer.setDivisor(Math.abs(divisionsContainer.getDivisor()));
+			divisionsContainer.setNegativeIntHandler(divisionsContainer.getNegativeIntHandler() + 1);
 		}
 	}
 
 	private String handleFirstThreeLinesEnum(int line, DivisionsContainer divisionsContainer) {
-		String returnString = "";
+		String returnString = EMPTY;
 		if (line == 0) {
 			returnString = handleFirstLineOfExpression(divisionsContainer);
 		}
